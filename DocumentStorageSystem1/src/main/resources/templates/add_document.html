@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Document</title>
+</head>
+<body>
+<div th:fragment="add_documents_page">
+
+    <div class="card-body d-flex flex-column align-items-center">
+
+        <div th:if="${SuccessMessage}" class="alert alert-success">
+            <p th:text="${SuccessMessage}"></p>
+        </div>
+
+        <div th:if="${ErrorMessage}" class="alert alert-danger">
+            <p th:text="${ErrorMessage}"></p>
+        </div>
+
+        <form th:action="@{/documents/addDocument}" th:method="post" th:object="${Document}" enctype="multipart/form-data">
+            <div class="container">
+
+                <div class="row mb-4">
+                    <div class="col-md-12 text-center">
+                        <h3>Add a New Document</h3>
+                    </div>
+                </div>
+
+                <div class="row g-3 align-items-center">
+
+                    <input class="form-control" th:type="hidden" th:field="*{doc_id}" />
+
+                    <div class="col-md-6">
+                        <label th:for="author" class="form-label">Author</label>
+                        <input class="form-control" placeholder="Author" th:type="text" th:id="author"  th:name="author" th:field="*{author}" required>
+                    </div>
+
+
+                    <div class="col-md-6">
+                        <label th:for="title" class="form-label">Title</label>
+                        <input placeholder="Title" th:type="text" class="form-control" th:id="title" th:name="title" th:field="*{title}" required>
+                    </div>
+
+
+                    <div class="col-md-6">
+                        <label th:for="upload_date" class="form-label">Upload Date</label>
+                        <input class="form-control datetimepicker" type="date" th:field="*{upload_date}" placeholder="Upload Date" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="file">Choose PDF File</label>
+                        <input type="file" name="file" id="file" class="form-control" accept="application/pdf" required />
+                    </div>
+
+                    <div class="col-md-12 text-center">
+                        <button class="btn btn-primary w-100" th:type="submit" th:name="submit">Add Document</button>
+                    </div>
+
+
+                </div>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+</body>
+</html>
+
+
+
+
+
+

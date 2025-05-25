@@ -1,0 +1,82 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="table-responsive">
+{% if documents.items %}
+<table class="table table-hover table-bordered">
+  <thead class="thead-light">
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Title</th>
+        <th scope="col">Author</th>
+        <th scope="col">Upload Date</th>
+      <th scope="col" colspan="5">Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for document in documents.items %}
+    <tr>
+      <td>{{ document.doc_id }}</td>
+        <td>{{ document.title }}</td>
+      <td>{{ document.author }}</td>
+      <td>{{ document.upload_date }}</td>
+      <td><a class="btn btn-secondary btn-sm mt-1 mb-1" href="{{ url_for('updateDocument', doc_id=document.doc_id) }}">Update Document</a></td>
+      <td><a class="btn btn-secondary btn-sm mt-1 mb-1" href="{{ url_for('viewContentsPerDocument', doc_id=document.doc_id) }}">View Documents' Contents</a></td>
+      <td><button type="button" class="btn btn-danger btn-sm m-1" data-bs-toggle="modal" data-bs-target="#deleteModal">Delete Document</button></td>
+      {% if document.file_name %}
+          <td><a
+            href="{{ url_for('uploaded_file', filename=document.file_name) }}"
+            target="_blank"
+            >📄 View PDF</a
+          ><td/>
+          <td><a
+            href="{{ url_for('uploaded_file', filename=document.file_name) }}"
+            download
+            >⬇️ Download PDF</a
+          ></td>
+          {% else %}
+          <td>No PDF file uploaded for this document.</td>
+          {% endif %}
+    </tr>
+
+<!-- Modal -->
+  <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="deleteModalLabel">Delete Document?</h5>
+          <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <form action="{{ url_for('deleteSingleDocument', doc_id=document.doc_id) }}" method="POST">
+            <input class="btn btn-danger" type="submit" value="Delete Document">
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endfor %}
+     </tbody>
+</table>
+          {% for page_num in documents.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+                {% if page_num %}
+                     {% if documents.page == page_num %}
+                          <a href="{{ url_for('viewAllDocuments', page=page_num) }}" class="btn btn-info mb-4">{{ page_num }}</a>
+                     {% else %}
+                          <a href="{{ url_for('viewAllDocuments', page=page_num) }}" class="btn btn-outline-info mb-4">{{ page_num }}</a>
+
+                     {% endif %}
+                {% else %}
+                     ....
+                {% endif %}
+          {% endfor %}
+{% else %}
+  <p class="text-center text-muted fst-italic mt-3">
+        <i class="fas fa-tasks-alt me-2"></i> There are currently no documents
+    </p>
+
+{% endif %}
+</div>
+{% endblock content %}

@@ -1,0 +1,106 @@
+{% extends "layout.html" %} {% block content %}
+<div class="container mt-5">
+  <div class="card shadow">
+    <div class="card-body">
+      <article class="media content-section">
+        <div class="media-body ms-3">
+          <div
+            class="article-metadata d-flex justify-content-between align-items-center"
+          >
+            <div>
+              <a class="fw-bold text-dark" href="#">{{ document.title }}</a>
+            </div>
+            <div>
+              <a
+                class="btn btn-outline-secondary btn-sm mt-1 mb-1"
+                href="{{ url_for('updateDocument', doc_id=document.doc_id) }}"
+                >Update Document</a
+              >
+              <a
+                class="btn btn-outline-secondary btn-sm mt-1 mb-1"
+                href="{{ url_for('viewContentsPerDocument', doc_id=document.doc_id) }}"
+                >View Documents' Contents</a
+              >
+              <button
+                type="button"
+                class="btn btn-outline-danger btn-sm m-1"
+                data-bs-toggle="modal"
+                data-bs-target="#deleteModal"
+              >
+                Delete Document
+              </button>
+            </div>
+          </div>
+          <h2 class="article-title">{{ document.title }}</h2>
+          <p class="article-content">
+            <span class="fw-bold">Author:</span> {{ document.author }}
+          </p>
+          <p class="article-content">
+            <span class="fw-bold">Upload Date:</span>{{ document.upload_date}}
+          </p>
+          {% if document.file_name %}
+          <a
+            href="{{ url_for('uploaded_file', filename=document.file_name) }}"
+            target="_blank"
+            >📄 View PDF</a
+          ><br />
+          <a
+            href="{{ url_for('uploaded_file', filename=document.file_name) }}"
+            download
+            >⬇️ Download PDF</a
+          >
+          {% else %}
+          <p>No PDF file uploaded for this document.</p>
+          {% endif %}
+        </div>
+      </article>
+    </div>
+  </div>
+
+  <div
+    class="modal fade"
+    id="deleteModal"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="deleteModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="deleteModalLabel">Delete Document?</h5>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="modal-body">
+          Are you sure you want to delete this document? This action cannot be
+          undone.
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal"
+          >
+            Close
+          </button>
+          <form
+            action="{{ url_for('deleteSingleDocument', doc_id=document.doc_id) }}"
+            method="POST"
+          >
+            <input
+              class="btn btn-danger"
+              type="submit"
+              value="Delete Document"
+            />
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock content %}

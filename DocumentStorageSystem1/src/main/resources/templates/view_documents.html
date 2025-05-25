@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <title>View Documents</title>
+  </head>
+  <body>
+    <div th:fragment="view_documents_page">
+      <h1 class="text-center">View all Documents</h1>
+
+      <div class="card-body">
+        <div th:if="${SuccessMessage}" class="alert alert-success">
+          <p th:text="${SuccessMessage}"></p>
+        </div>
+
+        <div th:if="${ErrorMessage}" class="alert alert-danger">
+          <p th:text="${ErrorMessage}"></p>
+        </div>
+
+        <div class="col table-responsive">
+          <div class="row">
+            <div class="col-md-9">
+              <div class="btn-group m-3">
+                <span
+                  ><a
+                    th:href="@{/documents/delete_all_documents}"
+                    class="btn btn-danger"
+                    >Delete All Documents</a
+                  ></span
+                >
+              </div>
+            </div>
+
+            <div class="col-md-3">
+              <form th:action="@{/documents/view_document}" method="get">
+                <div class="input-group mb-3">
+                  <!--<input
+                    class="form-control"
+                    type="text"
+                    th:id="documentId"
+                    th:name="documentId"
+                    th:placeholder="|Search for Document|"
+                  />-->
+                  <input
+                    class="form-control"
+                    type="text"
+                    name="documentId"
+                    placeholder="Search for Document"
+                  />
+
+                  <div class="input-group-append">
+                    <button
+                      class="btn btn-outline-secondary"
+                      th:type="submit"
+                      th:name="submit"
+                    >
+                      Search for Document By ID
+                    </button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+
+          <div th:if="${SuccessMessage}" class="alert alert-success">
+            <p th:text="${SuccessMessage}"></p>
+          </div>
+
+          <div th:if="${ErrorMessage}" class="alert alert-danger">
+            <p th:text="${ErrorMessage}"></p>
+          </div>
+
+          <table
+            th:unless="${ViewDocument}"
+            class="table table-striped table-condensed table-bordered"
+          >
+            <thead>
+              <tr>
+                <th>Doc ID</th>
+                <th>Title</th>
+                <th>Author</th>
+                <th>Upload Date</th>
+                <th>Download Document</th>
+                <th>Update</th>
+                <th>Delete</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr th:each="document : ${ViewAllDocuments}">
+                <td th:text="${document.doc_id}"></td>
+                <td th:text="${document.title}"></td>
+                <td th:text="${document.author}"></td>
+                <td th:text="${document.upload_date}"></td>
+                <td>
+                <iframe th:src="@{/api/documents/{documentId}/download(documentId=${document.doc_id})}" width="100%" height="400px"></iframe>
+                </td>
+                <td>
+                  <a
+                    th:href="@{/documents/update/{documentId}(documentId=${document.doc_id})}"
+                    class="btn btn-primary"
+                    >Update Document</a
+                  >
+                </td>
+                <td>
+                  <a
+                    th:href="@{/documents/delete_document/{documentId}(documentId=${document.doc_id})}"
+                    class="btn btn-danger"
+                    >Delete Document</a
+                  >
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <table
+            th:if="${ViewDocument}"
+            class="table table-striped table-condensed table-bordered"
+          >
+            <thead>
+              <tr>
+                <th>Doc ID</th>
+                <th>Title</th>
+                <th>Author</th>
+                <th>Upload Date</th>
+                <th>Download Document</th>
+                <th>Update</th>
+                <th>Delete</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td th:text="${ViewDocument.doc_id}"></td>
+                <td th:text="${ViewDocument.title}"></td>
+                <td th:text="${ViewDocument.author}"></td>
+                <td th:text="${ViewDocument.upload_date}"></td>
+                <td>
+                  <iframe th:src="@{/api/documents/{documentId}/download(documentId=${ViewDocument.doc_id})}" width="100%" height="400px"></iframe>
+                </td>
+
+                <td>
+                  <a
+                    th:href="@{/documents/update/{documentId}(documentId=${ViewDocument.doc_id})}"
+                    class="btn btn-primary"
+                    >Update Document</a
+                  >
+                </td>
+                <td>
+                  <a
+                    th:href="@{/documents/delete_document/{documentId}(documentId=${ViewDocument.doc_id})}"
+                    class="btn btn-danger"
+                    >Delete Document</a
+                  >
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

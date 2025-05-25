@@ -1,0 +1,14 @@
+INSTRUCTIONS TO RUN THE SYSTEM
+1. Open the SQL files and run them in your MySQL Database
+2. Unzip the Folder called Mukuka and open it in VSCode
+3. Within the folder you'll see three subfolders
+4. Open the terminal and go into each folder individually, i.e. cd subsystem1-python, cd subsystem3-python, cd DocumentStorageSystem1
+5. For subsystem1-python, run the command: pip install -r requirements.txt and then python run.py
+6. For subsystem2-python, run the command: pip install -r requirements.txt and then python app.py
+7. For DocumentStorageSystem1, run the command: mvn spring-boot:run
+
+NOTE: 
+- Each system has a User Friendly interface that you may use to add documents, search for documents and perform various functionalities
+- DocumentStorageSystem1 is actually Subsystem 1 (Java & MySQL) 
+- Subsystem1-python is actually Subsystem 2 (Python & MySQL) 
+- Subsystem3-python is actually Subsystem 3 (Python & MySQL) 

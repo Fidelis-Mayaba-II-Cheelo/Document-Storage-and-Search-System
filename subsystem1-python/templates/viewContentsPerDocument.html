@@ -1,0 +1,66 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="table-responsive">
+{% if contents_per_document.items %}
+<table class="table table-hover table-bordered">
+  <thead class="thead-light">
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Document ID</th>
+        <th scope="col">Content</th>
+      <th scope="col" colspan="3">Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for content in contents_per_document.items %}
+    <tr>
+      <td>{{ content.id }}</td>
+        <td>{{ content.doc_id }}</td>
+      <td>{{ content.content }}</td>
+      <td><a class="btn btn-secondary btn-sm mt-1 mb-1" href="{{ url_for('updateContent', doc_id=doc_id, id=content.id) }}">Update Content</a></td>
+      <td><a class="btn btn-secondary btn-sm mt-1 mb-1" href="{{ url_for('viewDocument', doc_id=doc_id) }}">View Document Associated With Content</a></td>
+      <td><button type="button" class="btn btn-danger btn-sm m-1" data-bs-toggle="modal" data-bs-target="#deleteModal">Delete Content</button></td>
+    </tr>
+
+<!-- Modal -->
+  <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="deleteModalLabel">Delete Content?</h5>
+          <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <form action="{{ url_for('deleteSingleContentForDocument', doc_id=doc_id, id=content.id) }}" method="POST">
+            <input class="btn btn-danger" type="submit" value="Delete Content">
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endfor %}
+     </tbody>
+</table>
+          {% for page_num in contents_per_document.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+                {% if page_num %}
+                     {% if contents_per_document.page == page_num %}
+                          <a href="{{ url_for('viewContentsPerDocument', doc_id=doc_id, page=page_num) }}" class="btn btn-info mb-4">{{ page_num }}</a>
+                     {% else %}
+                          <a href="{{ url_for('viewContentsPerDocument', doc_id=doc_id, page=page_num) }}" class="btn btn-outline-info mb-4">{{ page_num }}</a>
+
+                     {% endif %}
+                {% else %}
+                     ....
+                {% endif %}
+          {% endfor %}
+{% else %}
+  <p class="text-center text-muted fst-italic mt-3">
+        <i class="fas fa-tasks-alt me-2"></i> There are currently no contents for this document
+    </p>
+
+{% endif %}
+</div>
+{% endblock content %}

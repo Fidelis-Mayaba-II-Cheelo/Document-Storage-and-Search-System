@@ -1,0 +1,63 @@
+{% extends "layout.html" %} {% block content %}
+
+<div class="card-body d-flex flex-column align-items-center">
+  <form method="POST" action="" enctype="multipart/form-data">
+    <div class="container">
+      <!-- Adds a csrf token -->
+      {{ form.hidden_tag() }}
+      <div class="row mb-4">
+        <div class="col-md-12 text-center">
+          {% if title %}
+          <h3>{{ title }}</h3>
+          {% endif %}
+        </div>
+      </div>
+
+      <div class="row g-3 align-items-center">
+        <div class="col-md-6">
+          {{ form.author.label(class="form-control-label") }} {% if
+          form.author.errors %} {{ form.author(class="form-control
+          form-control-lg is-invalid") }}
+          <div class="invalid-feedback">
+            {% for error in form.author.errors %}
+            <span>{{ error }}</span>
+            {% endfor %}
+          </div>
+          {% else %} {{ form.author(class="form-control form-control-lg") }} {%
+          endif %}
+        </div>
+        <div class="col-md-6">
+          {{ form.title.label(class="form-control-label") }} {% if
+          form.title.errors %} {{ form.title(class="form-control form-control-lg
+          is-invalid") }}
+          <div class="invalid-feedback">
+            {% for error in form.title.errors %}
+            <span>{{ error }}</span>
+            {% endfor %}
+          </div>
+          {% else %} {{ form.title(class="form-control form-control-lg") }} {%
+          endif %}
+        </div>
+
+        <div class="col-md-12 mt-3">
+          <label for="file" class="form-control-label"
+            >Upload PDF Document</label
+          >
+          <input
+            type="file"
+            class="form-control"
+            name="file"
+            accept="application/pdf"
+            required
+          />
+        </div>
+
+        <div class="col-md-12 text-center">
+          {{ form.submit(class="btn btn-primary w-100") }}
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+
+{% endblock content %}

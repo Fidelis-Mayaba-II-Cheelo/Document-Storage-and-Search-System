@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Add Content</title>
+</head>
+<body>
+<div th:fragment="add_content_page">
+
+  <div class="card-body d-flex flex-column align-items-center">
+
+
+    <div th:if="${SuccessMessage}" class="alert alert-success">
+        <p th:text="${SuccessMessage}"></p>
+    </div>
+
+    <div th:if="${ErrorMessage}" class="alert alert-danger">
+        <p th:text="${ErrorMessage}"></p>
+    </div>
+
+    <form th:method="post" th:action="@{/contents/addContent}" th:object="${Content}">
+      <div class="container">
+
+        <div class="row mb-4">
+          <div class="col-md-12 text-center">
+            <h3>Add Content to Document</h3>
+          </div>
+        </div>
+
+        <div class="row g-3 align-items-center">
+
+          <input class="form-control" th:type="hidden" th:field="*{id}" />
+
+          <div class="col-md-6">
+            <label class="form-label">Document</label>
+            <select class="form-control" th:field="*{doc_id}">
+              <option th:each="document : ${allDocuments}"
+                      th:value="${document.doc_id}"
+                      th:text="${document.title}"
+              >
+              </option>
+            </select>
+          </div>
+
+          <div class="col-md-6">
+            <label th:for="content" class="form-label">Content</label>
+            <input class="form-control" placeholder="Content" th:type="text" th:id="type" th:name="content" th:field="*{content}" required>
+          </div>
+
+          <div class="col-md-12 text-center">
+            <button class="btn btn-primary w-100" th:type="submit" th:name="submit">Add Content</button>
+          </div>
+
+
+        </div>
+
+      </div>
+
+    </form>
+
+  </div>
+
+</div>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
